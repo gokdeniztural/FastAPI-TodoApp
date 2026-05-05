@@ -1,0 +1,13 @@
+# Veritabanı
+*.db
+todo.db
+
+# Sanal Ortam
+fastapienv/
+
+# Python Ön Bellek Dosyaları
+__pycache__/
+*.pyc
+
+# IDE Dosyaları
+.idea/
