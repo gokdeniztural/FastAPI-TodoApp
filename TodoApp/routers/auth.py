@@ -2,7 +2,7 @@ from typing_extensions import Annotated
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException
 from starlette import status
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from database import SessionLocal
 from models import Users
 from passlib.context import CryptContext
@@ -21,12 +21,15 @@ SECRET_KEY = "a02f02f68a5e190f18488bb76867ef8aa0a33e3d7b5d4fa3db7ae7c0a18a9057"
 ALGORITHM = "HS256"
 
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token") 
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
+# OAuth2PasswordBearer, tokenUrl parametresi ile token endpoint'ini belirtiyoruz.
+# /auth/token endpoint'ine istek atıldığında token oluşturulacak ve döndürülecek. 
+# Diğer endpointlerde bu token doğrulanarak kullanıcı bilgilerine erişilecek. 
 
 
 class CreateUserRequest(BaseModel):
     username: str
-    email: str
+    email: EmailStr
     first_name: str
     last_name: str
     password: str
@@ -95,7 +98,7 @@ async def create_user(db: db_dependency, create_user_request: CreateUserRequest)
 @router.post('/token', response_model=Token)
 async def login_for_access_token(form_data: form_dependency,
                                  db: db_dependency):
-    user = authenticate_user(form_data.username, form_data.password, db)
+    user = authenticate_user(form_data.username, form_data.password, db) # önce kullanıcı doğrulanacak
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, 
                             detail="Could not validate user.")

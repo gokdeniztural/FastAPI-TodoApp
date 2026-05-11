@@ -80,7 +80,7 @@ async def update_todo(user: user_dependency,
     todo_model.priority = todo_request.priority
     todo_model.complete = todo_request.complete
 
-    db.add(todo_model)
+    #db.add(todo_model) SQLAlchemy takip ediyormuş zaten. Güncellemelerde tekrar add işlemine gerek yok!
     db.commit()
 
 
