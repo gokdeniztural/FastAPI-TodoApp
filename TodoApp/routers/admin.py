@@ -4,7 +4,6 @@ from fastapi import APIRouter, Depends, HTTPException, Path
 from starlette import status
 from models import Todos
 from database import SessionLocal
-from pydantic import BaseModel, Field
 from .auth import get_current_user
 
 
@@ -12,10 +11,6 @@ router = APIRouter(
     prefix = "/admin",
     tags = ["admin"]
 )
-
-# models.Base.metadata.create_all(bind=engine) # Bu satır sadece todos.db mevcut değilse çalışacaktır! / Tablo oluşturuldu
-
-# app.include_router(auth.router) # auth.py dosyasındaki router'ı main'e dahil ettiğimiz kısım.
 
 def get_db():
     db = SessionLocal()
