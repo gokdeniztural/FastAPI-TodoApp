@@ -32,7 +32,7 @@ class TodoRequest(BaseModel):
     complete: bool
 
 @router.get('/',status_code=status.HTTP_200_OK)
-async def read_all(user: user_dependency, db: db_dependency): # Dependency Injection
+async def read_all(user: user_dependency, db: db_dependency):
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication Failed")
     return db.query(Todos).filter(Todos.owner_id == user.get('id')).all()
@@ -46,7 +46,7 @@ async def read_todo(user: user_dependency, db: db_dependency, todo_id: int = Pat
     todo_model = db.query(Todos).filter(Todos.id == todo_id)\
     .filter(Todos.owner_id == user.get('id')).first()
 
-    if todo_model is not None: # is not None kontrolü önemli. Kullanıcı olmayan bir id verirse veritabanı None döndürür.
+    if todo_model is not None:
         return todo_model
     raise HTTPException(status_code=404, detail="Todo not found")
 
