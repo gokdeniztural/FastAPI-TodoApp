@@ -7,7 +7,9 @@ fastapienv/
 
 # Python Ön Bellek Dosyaları
 __pycache__/
+.pytest_cache/
 *.pyc
 
 # IDE Dosyaları
 .idea/
+.vscode/
