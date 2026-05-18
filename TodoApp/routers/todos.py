@@ -12,6 +12,8 @@ router = APIRouter()
 
 # models.Base.metadata.create_all(bind=engine) # Bu satır sadece todos.db mevcut değilse çalışacaktır! / Tablo oluşturuldu
 
+# (main.py) burada!
+
 # app.include_router(auth.router) # auth.py dosyasındaki router'ı main'e dahil ettiğimiz kısım.
 
 def get_db():

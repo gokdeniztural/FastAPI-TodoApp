@@ -11,4 +11,4 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base = declarative_base()
+Base = declarative_base() # test_todos.py dosyasında da kullanmak için Base'i burada tanımlıyoruz.

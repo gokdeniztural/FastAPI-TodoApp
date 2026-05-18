@@ -2,7 +2,7 @@ from fastapi.testclient import TestClient
 from ..main import app
 from fastapi import status
 
-client = TestClient(app)
+client = TestClient(app) # ana sunucuyu başlatmadan test için sahte bir client oluşturuyoruz
 
 
 def test_return_health_check():
