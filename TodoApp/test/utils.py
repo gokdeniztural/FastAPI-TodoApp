@@ -1,0 +1,50 @@
+from sqlalchemy import create_engine, text
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import StaticPool
+from ..database import Base 
+from ..main import app
+from fastapi.testclient import TestClient
+import pytest
+from ..models import Todos
+
+SQLALCHEMY_DATABASE_URL = "sqlite:///./testdb.db" # test için sqlite kullanabiliriz. Production için
+                                                  # postgresql kullanımımız devam ediyor.
+engine = create_engine(
+    SQLALCHEMY_DATABASE_URL, 
+    connect_args={"check_same_thread": False},
+    poolclass = StaticPool 
+)
+
+TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+Base.metadata.create_all(bind=engine) # test veritabanında tabloları oluşturmak için kullanıyoruz.
+
+def override_get_db():
+    db = TestingSessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+def override_get_current_user():
+    return {'username': 'testuser', 'id': 1, 'user_role': 'admin'}
+
+
+client = TestClient(app) 
+
+@pytest.fixture
+def test_todo():
+    todo = Todos(
+        title="Learn the code!",
+        description = "Need to learn everyday!",
+        priority = 5,
+        complete = False,
+        owner_id = 1 # test_user id'sini 1 yapmıştık !
+    )
+    db = TestingSessionLocal()
+    db.add(todo)
+    db.commit()
+    yield todo
+    with engine.connect() as connection:
+        connection.execute(text("DELETE FROM todos")) # test tamamlandıktan sonra test.db tablolarını temizler!
+        connection.commit()
