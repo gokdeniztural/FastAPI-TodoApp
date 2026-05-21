@@ -5,7 +5,8 @@ from ..database import Base
 from ..main import app
 from fastapi.testclient import TestClient
 import pytest
-from ..models import Todos
+from ..models import Todos, Users
+from ..routers.auth import bcrypt_context
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./testdb.db" # test için sqlite kullanabiliriz. Production için
                                                   # postgresql kullanımımız devam ediyor.
@@ -47,4 +48,24 @@ def test_todo():
     yield todo
     with engine.connect() as connection:
         connection.execute(text("DELETE FROM todos")) # test tamamlandıktan sonra test.db tablolarını temizler!
+        connection.commit()
+
+@pytest.fixture
+def test_user():
+    user = Users(
+        username = "tolgatural",
+        email = "tolgatural@example.com",
+        first_name = "Tolga",
+        last_name = "Tural",
+        hashed_password = bcrypt_context.hash("password123"),
+        role = "admin",
+        phone_number = "0533-123-12 34"
+    )
+
+    db = TestingSessionLocal()
+    db.add(user)
+    db.commit()
+    yield user
+    with engine.connect() as connection:
+        connection.execute(text("DELETE FROM users")) # todos fixture ile aynı
         connection.commit()
