@@ -13,3 +13,9 @@ __pycache__/
 # IDE Dosyaları
 .idea/
 .vscode/
+
+# Çevresel Değişkenler (Gizli Şifreler ve Ayarlar)
+.env
+
+# Log Dosyaları
+*.log

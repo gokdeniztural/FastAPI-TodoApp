@@ -2,13 +2,17 @@ from typing_extensions import Annotated
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException
 from starlette import status
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from ..database import SessionLocal
 from ..models import Users
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from jose import jwt, JWTError
 from datetime import timedelta, datetime, timezone
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  # Bu komut .env dosyasının içindeki gizli verileri sisteme yükler
 
 
 router = APIRouter(
@@ -17,7 +21,7 @@ router = APIRouter(
 # /auth ile başlayan tüm endpointler bu router'a gidecek. /auth/token gibi.
 )
 
-SECRET_KEY = "a02f02f68a5e190f18488bb76867ef8aa0a33e3d7b5d4fa3db7ae7c0a18a9057"
+SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -32,7 +36,7 @@ class CreateUserRequest(BaseModel):
     email: EmailStr
     first_name: str
     last_name: str
-    password: str
+    password: str = Field(min_length=4)
     role : str
     phone_number: str
 

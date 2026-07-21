@@ -6,7 +6,7 @@ from .routers import auth, todos, admin, users
 
 app = FastAPI()
 
-Base.metadata.create_all(bind=engine) # Bu satır sadece todos.db mevcut değilse çalışacaktır! / Tablo oluşturuldu
+Base.metadata.create_all(bind=engine) # Bu satır sadece todos.db mevcut değilse çalışacaktır! (sqlite)
 
 @app.get("/healthy")
 def health_check():
