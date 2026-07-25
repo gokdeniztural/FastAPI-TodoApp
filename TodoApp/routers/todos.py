@@ -8,7 +8,10 @@ from pydantic import BaseModel, Field
 from .auth import get_current_user
 
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/todos",
+    tags=["todos"]
+)
 
 # models.Base.metadata.create_all(bind=engine) # Bu satır sadece todos.db mevcut değilse çalışacaktır! / Tablo oluşturuldu
 

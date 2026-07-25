@@ -1,6 +1,6 @@
 from typing_extensions import Annotated
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from starlette import status
 from pydantic import BaseModel, EmailStr, Field
 from ..database import SessionLocal
@@ -11,6 +11,7 @@ from jose import jwt, JWTError
 from datetime import timedelta, datetime, timezone
 import os
 from dotenv import load_dotenv
+from fastapi.templating import Jinja2Templates
 
 load_dotenv()  # Bu komut .env dosyasının içindeki gizli verileri sisteme yükler
 
@@ -54,6 +55,20 @@ def get_db():
 db_dependency = Annotated[Session, Depends(get_db)]
 form_dependency = Annotated[OAuth2PasswordRequestForm, Depends()]
 
+templates = Jinja2Templates(directory="TodoApp/templates")
+
+
+### Pages ###
+
+@router.get("/login-page")
+def render_login_page(request: Request):
+    return templates.TemplateResponse(request=request, name="login.html")
+
+@router.get("/register-page")
+def render_register_page(request: Request):
+    return templates.TemplateResponse(request=request, name="register.html")
+
+### Endpoints ###
 def authenticate_user(username: str, password: str, db):
     user = db.query(Users).filter(Users.username == username).first()
     if not user:
