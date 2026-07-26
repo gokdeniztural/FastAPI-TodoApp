@@ -19,3 +19,6 @@ __pycache__/
 
 # Log Dosyaları
 *.log
+
+# Test dosyası
+test_example.py
