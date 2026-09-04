@@ -267,19 +267,6 @@ pytest TodoApp/test -v
 - `test_user` ve `test_todo` pytest fixture'ları her testten sonra ilgili tabloları temizler.
 - Kapsam: kayıt/login (`test_auth.py`), todo CRUD (`test_todos.py`), admin uç noktaları (`test_admin.py`), kullanıcı profili (`test_users.py`).
 
-## 🔭 Geliştirilebilecek Noktalar
-
-Bu bölüm, projenin mevcut durumunu şeffaf şekilde belgelemek için eklendi — bir portföy projesi olarak bilinçli teknik borç:
-
-- [x] ~~PostgreSQL bağlantı bilgisi koda gömülü~~ → `DATABASE_URL` artık `.env` üzerinden okunuyor, geçmiş commit'lerden temizlendi.
-- [ ] `access_token` cookie'si `HttpOnly`/`Secure` bayrakları olmadan JS ile yazılıyor; XSS riskine karşı sunucu taraflı `Set-Cookie` + `HttpOnly` kullanımına geçilebilir.
-- [ ] CI (GitHub Actions ile otomatik `pytest` çalıştırma) eklenebilir.
-- [ ] Refresh token / token yenileme mekanizması yok (20 dakikalık sabit ömür).
-
-## 📄 Lisans
-
-Bu depo için henüz bir `LICENSE` dosyası eklenmemiştir. Kullanmak, çatallamak (fork) veya katkı sağlamak isterseniz lütfen benimle iletişime geçin.
-
 ---
 
 **Geliştirici:** [Gökdeniz Tural](https://github.com/gokdeniztural)
