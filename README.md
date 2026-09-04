@@ -123,7 +123,7 @@ FastAPI-TodoApp/
 │   ├── main.py                  # Uygulama girişi, router'ların bağlanması
 │   ├── alembic.ini
 │   └── requirements.txt
-├── .env                          # SECRET_KEY (repo'ya dahil değil)
+├── .env                          
 └── README.md
 ```
 
