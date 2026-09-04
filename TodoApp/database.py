@@ -1,12 +1,17 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
+import os
+from dotenv import load_dotenv
 
-#SQLALCHEMY_DATABASE_URL = 'sqlite:///./todos.db'
-SQLALCHEMY_DATABASE_URL = 'postgresql://postgres:REDACTED@localhost:5432/TodoApplicationDatabase'
+load_dotenv()  # .env dosyasındaki DATABASE_URL gibi değişkenleri sisteme yükler
 
-#engine = create_engine(SQLALCHEMY_DATABASE_URL,connect_args={'check_same_thread':False})
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
+# Bağlantı dizesi artık kodda değil, .env dosyasındaki DATABASE_URL değişkeninde tutuluyor.
+# .env içinde DATABASE_URL tanımlı değilse (örn. hızlı deneme için) yerel bir SQLite dosyasına düşülür.
+SQLALCHEMY_DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///./todos.db')
+
+connect_args = {'check_same_thread': False} if SQLALCHEMY_DATABASE_URL.startswith('sqlite') else {}
+engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args=connect_args)
 # Uygulamanın veritabanıyla etkileşimini sağlayan motor.
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine) # Her bir istek için geçici
